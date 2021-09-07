@@ -22,17 +22,26 @@ function read_spectrum(datafile, col_names=["X", "Y"])
     return df
 end
 
+
 function read_angle_data_from_dir(directory, format=".csv")
 
     angle_data = []
 
-    for spectrum_file in readdir(directory, join=true)
-        if endswith(spectrum_file, format)
-            str_start = findfirst("deg", spectrum_file)[end] + 1
-            str_end = findlast(format, spectrum_file)[1] - 1
-            angle = parse(Float64, spectrum_file[str_start:str_end])
-            dataframe = read_spectrum(spectrum_file)
-            push!(angle_data, [angle, [dataframe[:, 1], dataframe[:, 2]]])
+    for (root, dirs, files) in walkdir(directory)
+        for spectrum_file in files
+            if endswith(spectrum_file, format)
+                str_start = findfirst("deg", spectrum_file)[end] + 1
+                str_end = findlast(format, spectrum_file)[1] - 1
+
+                if tryparse(Int, spectrum_file[str_start:str_end]) === nothing
+                    angle = parse(Int, spectrum_file[1:str_start-4])
+                else
+                    angle = parse(Int, spectrum_file[str_start:str_end])
+                end
+                dataframe = read_spectrum(joinpath(root, spectrum_file))
+                push!(angle_data, [angle, dataframe])
+            end
+            
         end
     end
     return sort(angle_data)

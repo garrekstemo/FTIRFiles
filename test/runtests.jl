@@ -1,10 +1,13 @@
-using ProjectIO
 using Test
+using ProjectIO
+using DataFrames
 
 
 data_dir = joinpath(dirname(dirname(pathof(ProjectIO))), "test/data")
 spectrum_file = data_dir * "/liquid_crystal_in_etalon.csv"
 angles_dir = data_dir * "/angle_resolved"
+
+println(pwd())
 
 @testset "read JASCO FTIR csv file" begin
     df = ProjectIO.read_spectrum(spectrum_file)
@@ -18,6 +21,11 @@ end
 
 
 @testset "read angle-resolved data" begin
-    data = ProjectIO.read_angle_data_from_dir(angles_dir)
-
+    datalist = ProjectIO.read_angle_data_from_dir(angles_dir)
+    @test length(datalist) == 6
+    @test [typeof(i[1]) == Int for i in datalist] == ones(length(datalist))
+    @test typeof(datalist[1][2]) == DataFrame
+    for d in datalist
+        @test length(d) == 2
+    end
 end
