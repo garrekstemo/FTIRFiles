@@ -4,8 +4,8 @@ using CSV, DataFrames
 
 function read_spectrum(datafile, col_names=["X", "Y"])
     #TODO: Get meta-data from the spectrum file.
-
-    df = DataFrame(CSV.File(datafile, datarow=20, footerskip=36))
+    datarows = 0
+    
     metadata = CSV.File(datafile, limit=18)
     for row in metadata
         if row.TITLE == "XUNITS"
@@ -17,7 +17,18 @@ function read_spectrum(datafile, col_names=["X", "Y"])
         if row.TITLE == "YUNITS"
             col_names[2] = titlecase(row.Column2)
         end
+
+        if row.TITLE == "NPOINTS"
+            datarows = parse(Int, row.Column2)
+        end
     end
+
+    if datarows > 0
+        df = DataFrame(CSV.File(datafile, datarow=20, limit=datarows))
+    else
+        df = DataFrame(CSV.File(datafile, datarow=20, footerskip=17))
+    end
+
     rename!(df, col_names)
     return df
 end
