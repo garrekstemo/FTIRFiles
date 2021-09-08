@@ -1,7 +1,7 @@
 name = "ProjectIO"
 uuid = "8f461479-960a-4355-a802-16cf8971498c"
 authors = ["Garrek Stemo <8449000+garrekds@users.noreply.github.com>"]
-version = "0.1.7"
+version = "0.1.8"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
