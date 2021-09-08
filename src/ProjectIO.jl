@@ -4,31 +4,31 @@ using CSV, DataFrames
 
 function read_spectrum(datafile, col_names=["X", "Y"])
     #TODO: Get meta-data from the spectrum file.
-    datarows = 0
+    # datarows = 0
     
-    metadata = CSV.File(datafile, limit=18)
-    for row in metadata
-        if row.TITLE == "XUNITS"
-            if row.Column2 == "1/CM"
-                col_names[1] = "Wavenumber"
-            end
-        end
+    # metadata = CSV.File(datafile, limit=18)
+    # for row in metadata
+    #     if row.TITLE == "XUNITS"
+    #         if row.Column2 == "1/CM"
+    #             col_names[1] = "Wavenumber"
+    #         end
+    #     end
 
-        if row.TITLE == "YUNITS"
-            col_names[2] = titlecase(row.Column2)
-        end
+    #     if row.TITLE == "YUNITS"
+    #         col_names[2] = titlecase(row.Column2)
+    #     end
 
-        if row.TITLE == "NPOINTS"
-            datarows = parse(Int, row.Column2)
-        end
-    end
+    #     if row.TITLE == "NPOINTS"
+    #         datarows = parse(Int, row.Column2)
+    #     end
+    # end
 
-    if datarows > 0
-        df = DataFrame(CSV.File(datafile, datarow=20, limit=datarows))
-    else
-        df = DataFrame(CSV.File(datafile, datarow=20, footerskip=17))
-    end
-
+    # if datarows > 0
+    #     df = DataFrame(CSV.File(datafile, datarow=20, limit=datarows))
+    # else
+        
+    # end
+    df = DataFrame(CSV.File(datafile, datarow=20, footerskip=17))
     rename!(df, col_names)
     return df
 end
