@@ -24,12 +24,12 @@ function read_spectrum(datafile, col_names=["X", "Y"])
     end
 
     # if datarows > 0
-        df = DataFrame(CSV.File(datafile, datarow=20, limit=datarows - 1))
+        # df = DataFrame(CSV.File(datafile, datarow=20, limit=datarows - 1))
     # else
         
     # end
     # df = DataFrame(CSV.File(datafile, datarow=20, footerskip=17))
-    rename!(df, col_names)
+    # rename!(df, col_names)
     return datarows
 end
 
