@@ -6,7 +6,7 @@ vibrational polariton experiments using a JASCO 4600 FT-IR
 and infrared spectrometer for femtosecond pump-probe dynamics experiments.
 
 This code will be made available upon publication in the interest
-of promoting open and reproducible science. This code is not written with 
+of promoting open and reproducible science. ProjectIO is not written with 
 the intention of it being used outside of the associated research projects.
 
 
