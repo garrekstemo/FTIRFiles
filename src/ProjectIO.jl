@@ -28,9 +28,9 @@ function read_spectrum(datafile, col_names=["X", "Y"])
     else
         df = DataFrame(CSV.File(datafile, datarow=20, footerskip=17)) 
     end
-    
+
     rename!(df, col_names)
-    return datarows
+    return df
 end
 
 
