@@ -1,21 +1,27 @@
-module ProjectIO
+module FTIRFiles
 
-using CSV, DataFrames
+using CSV
+using DataFrames
 
-function read_spectrum(datafile, col_names=["X", "Y"])
+export read_spectrum
+
+"""
+    read_spectrum(file, names = ["X", "Y"])
+"""
+function read_spectrum(file, names = ["X", "Y"])
     #TODO: Get meta-data from the spectrum file.
     datarows = 0
-    
+
     metadata = CSV.File(datafile, limit=18)
     for row in metadata
         if row.TITLE == "XUNITS"
             if row.Column2 == "1/CM"
-                col_names[1] = "Wavenumber"
+                names[1] = "Wavenumber"
             end
         end
 
         if row.TITLE == "YUNITS"
-            col_names[2] = titlecase(row.Column2)
+            names[2] = titlecase(row.Column2)
         end
 
         if row.TITLE == "NPOINTS"
@@ -29,12 +35,12 @@ function read_spectrum(datafile, col_names=["X", "Y"])
         df = DataFrame(CSV.File(datafile, skipto=20, footerskip=17)) 
     end
 
-    rename!(df, col_names)
+    rename!(df, names)
     return df
 end
 
 
-function read_angle_data_from_dir(directory, format=".csv")
+function read_angleresolved(directory, format=".csv")
 
     angle_data = []
 
