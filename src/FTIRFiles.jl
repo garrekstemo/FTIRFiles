@@ -87,28 +87,28 @@ function Spectrum(path::String)
 end
 
 
-function read_angleresolved(directory, format=".csv")
+# function read_angleresolved(directory, format=".csv")
 
-    angle_data = []
+#     angle_data = []
 
-    for (root, dirs, files) in walkdir(directory)
-        for spectrum_file in files
-            if endswith(spectrum_file, format)
-                str_start = findfirst("deg", spectrum_file)[end] + 1
-                str_end = findlast(format, spectrum_file)[1] - 1
+#     for (root, dirs, files) in walkdir(directory)
+#         for spectrum_file in files
+#             if endswith(spectrum_file, format)
+#                 str_start = findfirst("deg", spectrum_file)[end] + 1
+#                 str_end = findlast(format, spectrum_file)[1] - 1
 
-                if tryparse(Int, spectrum_file[str_start:str_end]) === nothing
-                    angle = parse(Int, spectrum_file[1:str_start-4])
-                else
-                    angle = parse(Int, spectrum_file[str_start:str_end])
-                end
-                dataframe = read_spectrum(joinpath(root, spectrum_file))
-                push!(angle_data, [angle, dataframe])
-            end
+#                 if tryparse(Int, spectrum_file[str_start:str_end]) === nothing
+#                     angle = parse(Int, spectrum_file[1:str_start-4])
+#                 else
+#                     angle = parse(Int, spectrum_file[str_start:str_end])
+#                 end
+#                 dataframe = read_spectrum(joinpath(root, spectrum_file))
+#                 push!(angle_data, [angle, dataframe])
+#             end
             
-        end
-    end
-    return sort(angle_data)
-end
+#         end
+#     end
+#     return sort(angle_data)
+# end
 
 end # module
