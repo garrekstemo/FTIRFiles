@@ -74,7 +74,6 @@ function Spectrum(path::String)
     metadata["scan speed"] = metadata["スキャンスピード"]
     metadata["filter"] = metadata["フィルタ"]
     
-
     # Parse xy data
     npoints = parse(Int64, metadata["NPOINTS"])
     xdata = zeros(npoints)
