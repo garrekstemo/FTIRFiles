@@ -1,4 +1,4 @@
-module FTIRFiles
+module SpectrumFiles
 
 using CSV
 using DataFrames
