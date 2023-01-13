@@ -1,25 +1,20 @@
-# FTIRFiles.jl
+# SpectrumFiles.jl
 
-FTIRFiles.jl contains the data read/write functionality for 
-vibrational polariton experiments using a JASCO 4600 FT-IR 
-(Fourier Transform Infrared Spectrometer) for steady-state measurements
-and infrared spectrometer for femtosecond pump-probe dynamics experiments.
+SpectrumFiles.jl reads text files from a JASCO 4600 FT-IR 
+(Fourier Transform Infrared Spectrometer). It does not read the .jws files.
+Instead the user must export raw data to a .csv or other text file format.
+SpectrumFiles.jl parses the file and stores metadata and xy data in a Julia type called `Spectrum`.
 
 This code will be made available upon publication in the interest
-of promoting open and reproducible science. ProjectIO is not written with 
-the intention of it being used outside of the associated research projects.
+of promoting open and reproducible science. SpectrumFiles is not written with 
+the intention of it being used outside of the associated research projects. It might not work.
 
 
 ## Installation
 
-To install ProjectIO.jl, use the Julia package manager:
+To install SpectrumFiles.jl, use the Julia package manager:
 
 ```
 julia> using Pkg
-julia> Pkg.add(url="https://github.com/garrekstemo/ProjectsIO")
+julia> Pkg.add(url="https://github.com/garrekstemo/SpectrumFiles.jl")
 ```
-
-## Related Packages
-
-- [TransferMatrix.jl](https://github.com/garrekstemo/TransferMatrix.jl):
-a transfer matrix algorithm written in Julia.
