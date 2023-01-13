@@ -4,11 +4,19 @@ using CSV
 using DataFrames
 using Dates
 using StringEncodings
+import Base.length
 
 export read_spectrum,
-       Spectrum
+       Spectrum,
+       read_angleresolved
 
-struct Spectrum
+"""
+    Spectrum
+
+A struct to hold the metadata and data of a spectrum.
+It is mutable because the incidence angle must be defined by the user.
+"""
+mutable struct Spectrum
     title::String
     datatype::String
     origin::String
@@ -35,12 +43,14 @@ struct Spectrum
     firsty::Float64
     maxy::Float64
     miny::Float64
+    angle::Int64  # angle of incidence
     x::Vector{Float64}
     y::Vector{Float64}
 end
 
-function Spectrum(path::String)
-    f = open(path, enc"SHIFT-JIS", "r")
+function Spectrum(path::String; encoding = enc"SHIFT-JIS")
+
+    f = open(path, encoding, "r")
     lines = readlines(f)
     metadata = Dict()
     for line in lines
@@ -60,7 +70,6 @@ function Spectrum(path::String)
             end
         end
     end
-    println(metadata)
 
     metadata["SPECTROMETER/DATA SYSTEM"] = metadata["機種名"]
     metadata["serial number"] = metadata["シリアル番号"]
@@ -112,34 +121,51 @@ function Spectrum(path::String)
                     parse(Float64, metadata["FIRSTY"]),
                     parse(Float64, metadata["MAXY"]),
                     parse(Float64, metadata["MINY"]),
+                    0,
                     xdata,
                     ydata
     )
 end
 
+"""
+    length(s::Spectrum)
 
-# function read_angleresolved(directory, format=".csv")
+Returns the number of points in the xy data of the spectrum.
+"""
+function length(s::Spectrum)
+    return s.npoints
+end
 
-#     angle_data = []
+"""
+    read_angleresolved(directory, format=".csv")
 
-#     for (root, dirs, files) in walkdir(directory)
-#         for spectrum_file in files
-#             if endswith(spectrum_file, format)
-#                 str_start = findfirst("deg", spectrum_file)[end] + 1
-#                 str_end = findlast(format, spectrum_file)[1] - 1
+Reads all spectra in a directory and returns a vector of `Spectrum` structs
+sorted by angle.
 
-#                 if tryparse(Int, spectrum_file[str_start:str_end]) === nothing
-#                     angle = parse(Int, spectrum_file[1:str_start-4])
-#                 else
-#                     angle = parse(Int, spectrum_file[str_start:str_end])
-#                 end
-#                 dataframe = read_spectrum(joinpath(root, spectrum_file))
-#                 push!(angle_data, [angle, dataframe])
-#             end
-            
-#         end
-#     end
-#     return sort(angle_data)
-# end
+Files must be named according to the format "degX.csv" or "degXX.csv" where X is the angle.
+"""
+function read_angleresolved(directory, format=".csv")
+
+    angle_data = Spectrum[]
+
+    for (root, dirs, files) in walkdir(directory)
+        for spectrum_file in files
+            if endswith(spectrum_file, format)
+                str_start = findfirst("deg", spectrum_file)[end] + 1
+                str_end = findlast(format, spectrum_file)[1] - 1
+
+                if tryparse(Int, spectrum_file[str_start:str_end]) === nothing
+                    angle = parse(Int, spectrum_file[1:str_start-4])
+                else
+                    angle = parse(Int, spectrum_file[str_start:str_end])
+                end
+                spectrum = Spectrum(joinpath(root, spectrum_file))
+                spectrum.angle = angle
+                push!(angle_data, spectrum)
+            end
+        end
+    end
+    return sort(angle_data, by = x -> x.angle)
+end
 
 end # module
