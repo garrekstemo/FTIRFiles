@@ -6,8 +6,8 @@ using Dates
 using StringEncodings
 import Base.length
 
-export read_spectrum,
-       Spectrum,
+export Spectrum,
+       read_spectrum,
        read_angleresolved
 
 """
