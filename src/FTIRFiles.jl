@@ -16,8 +16,16 @@ struct Spectrum
     date::Date
     time::Time
     spectrometer::String
+    detector::String
     locale::Int64
+    scans::Int64
     resolution::String
+    zerofilling::String
+    apodization::String
+    gain::String
+    aperture::String
+    scanspeed::String
+    filter::String
     deltax::Float64
     xunits::String
     yunits::String
@@ -52,7 +60,22 @@ function Spectrum(path::String)
             end
         end
     end
+    println(metadata)
 
+    metadata["SPECTROMETER/DATA SYSTEM"] = metadata["機種名"]
+    metadata["serial number"] = metadata["シリアル番号"]
+    metadata["detector"] = metadata["検出器"]
+    metadata["scans"] = metadata["積算回数"]
+    metadata["RESOLUTION"] = metadata["分解"]
+    metadata["zero filling"] = metadata["ゼロフィリング"]
+    metadata["apodization"] = metadata["アポダイゼーション"]
+    metadata["gain"] = metadata["ゲイン"]
+    metadata["aperture"] = metadata["アパーチャー"]
+    metadata["scan speed"] = metadata["スキャンスピード"]
+    metadata["filter"] = metadata["フィルタ"]
+    
+
+    # Parse xy data
     npoints = parse(Int64, metadata["NPOINTS"])
     xdata = zeros(npoints)
     ydata = zeros(npoints)
@@ -71,8 +94,16 @@ function Spectrum(path::String)
                     metadata["DATE"],
                     metadata["TIME"],
                     metadata["SPECTROMETER/DATA SYSTEM"],
+                    metadata["detector"],
                     parse(Int64, metadata["LOCALE"]),
+                    parse(Int64, metadata["scans"]),
                     metadata["RESOLUTION"],
+                    metadata["zero filling"],
+                    metadata["apodization"],
+                    metadata["gain"],
+                    metadata["aperture"],
+                    metadata["scan speed"],
+                    metadata["filter"],
                     parse(Float64, metadata["DELTAX"]),
                     metadata["XUNITS"],
                     metadata["YUNITS"],
