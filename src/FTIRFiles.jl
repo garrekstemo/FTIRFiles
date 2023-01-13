@@ -62,7 +62,8 @@ function Spectrum(path::String)
         xdata[i] = parse(Float64, split(line, ",")[1])
         ydata[i] = parse(Float64, split(line, ",")[2])
     end
-
+    
+    close(f)
     return Spectrum(metadata["TITLE"],
                     metadata["DATA TYPE"],
                     metadata["ORIGIN"],
