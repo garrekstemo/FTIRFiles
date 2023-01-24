@@ -48,6 +48,12 @@ mutable struct Spectrum
     y::Vector{Float64}
 end
 
+"""
+    Spectrum(path::String; encoding = enc"SHIFT-JIS")
+
+An outer constructor for the `Spectrum` type.
+Reads a spectrum from a csv file and returns a `Spectrum` struct.
+"""
 function Spectrum(path::String; encoding = enc"SHIFT-JIS")
 
     f = open(path, encoding, "r")
