@@ -5,11 +5,6 @@ SpectrumFiles.jl reads text files from a JASCO 4600 FT-IR
 Instead the user must export raw data to a .csv or other text file format.
 SpectrumFiles.jl parses the file and stores metadata and xy data in a Julia type called `Spectrum`.
 
-This code will be made available upon publication in the interest
-of promoting open and reproducible science. SpectrumFiles is not written with 
-the intention of it being used outside of the associated research projects. It might not work.
-
-
 ## Installation
 
 To install SpectrumFiles.jl, use the Julia package manager:
