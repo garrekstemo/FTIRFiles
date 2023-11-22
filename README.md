@@ -13,3 +13,9 @@ To install SpectrumFiles.jl, use the Julia package manager:
 julia> using Pkg
 julia> Pkg.add(url="https://github.com/garrekstemo/SpectrumFiles.jl")
 ```
+
+## Usage
+
+``
+Spectrum(filepath; encoding = enc"SHIFT-JIS")
+``
